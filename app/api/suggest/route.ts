@@ -60,7 +60,15 @@ Return your response in JSON format:
   "tags": ["tag1", "tag2", "tag3", ...],
   "materials": ["material1", "material2", ...],
   "coreDetails": ["Made by me", "Finished product", "Made between 2020 and 2025"],
-  "shippingDetails": "letter mail"
+  "shippingDetails": "letter mail",
+  "attributes": {
+    "craftType": "suggested craft type (e.g., Handmade, Hand-assembled)",
+    "primaryColor": "primary color",
+    "secondaryColor": "secondary color if applicable",
+    "occasion": "occasion (e.g., Birthday, Wedding, Everyday)",
+    "holiday": "holiday if applicable (e.g., Christmas, Halloween)",
+    "theme": "theme if applicable (e.g., Boho, Minimalist, Vintage)"
+  }
 }
 
 If a field already has good content, you can return null for that field.`;

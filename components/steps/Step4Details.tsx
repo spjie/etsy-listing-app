@@ -192,10 +192,20 @@ export default function Step4Details({
         <div className="text-gray-900">Auto-renews</div>
       </div>
 
-      <button className="w-full py-3 mb-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-        + Processing profile
-        <span className="float-right text-gray-500">Required</span>
-      </button>
+      {/* Processing Profile - Pre-filled */}
+      <div className="bg-gray-50 rounded-lg p-4 mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-700">Processing profile</span>
+            <span className="text-xs text-red-600">*</span>
+            <span className="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded-full">
+              Pre-filled
+            </span>
+          </div>
+          <button className="text-gray-600">✎</button>
+        </div>
+        <div className="text-gray-900">3-5 days processing time</div>
+      </div>
 
       {/* Shipping Details - Pre-filled */}
       <div className="bg-gray-50 rounded-lg p-4 mb-6">

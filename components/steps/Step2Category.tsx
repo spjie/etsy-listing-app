@@ -13,39 +13,37 @@ export default function Step2Category({
   updateDraft,
   aiSuggestions,
 }: Step2CategoryProps) {
-  // Sample categories - in a real app, these would come from an API
-  const categories = [
-    {
-      id: 'hoop-earrings',
-      name: 'Hoop Earrings',
-      path: 'Jewelry > Earrings > Hoop Earrings',
-      suggested: true,
-    },
-    {
-      id: 'beaded-necklaces',
-      name: 'Beaded Necklaces',
-      path: 'Jewelry > Necklaces > Beaded Necklaces',
-      suggested: false,
-    },
-    {
-      id: 'statement-earrings',
-      name: 'Statement Earrings',
-      path: 'Jewelry > Earrings > Statement Earrings',
-      suggested: false,
-    },
-  ];
+  // Generate category from AI suggestion with hierarchical path
+  const generateCategoryPath = (category: string) => {
+    const parts = category.split('>').map((p) => p.trim());
+    if (parts.length === 1) {
+      // If AI only provided final category, generate a reasonable path
+      return `Handmade > ${category} > ${category}`;
+    }
+    return category;
+  };
 
-  // If AI suggested a category, mark it
-  const categoriesWithSuggestion = categories.map((cat) => ({
-    ...cat,
-    suggested:
-      aiSuggestions.category &&
-      cat.name.toLowerCase().includes(aiSuggestions.category.toLowerCase()),
-  }));
+  const categories = aiSuggestions.category
+    ? [
+        {
+          id: 'ai-suggested',
+          name: aiSuggestions.category.split('>').pop()?.trim() || aiSuggestions.category,
+          path: generateCategoryPath(aiSuggestions.category),
+          suggested: true,
+        },
+      ]
+    : [];
 
   const handleCategorySelect = (categoryId: string) => {
     const selected = categories.find((c) => c.id === categoryId);
     updateDraft({ category: selected?.name });
+  };
+
+  const handleCustomCategory = () => {
+    const customCategory = prompt('Enter a custom category:');
+    if (customCategory) {
+      updateDraft({ category: customCategory });
+    }
   };
 
   return (
@@ -60,7 +58,7 @@ export default function Step2Category({
 
       {/* Category Options */}
       <div className="space-y-3 mb-6">
-        {categoriesWithSuggestion.map((category) => (
+        {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => handleCategorySelect(category.id)}
@@ -98,7 +96,10 @@ export default function Step2Category({
         ))}
       </div>
 
-      <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full hover:bg-gray-50">
+      <button
+        onClick={handleCustomCategory}
+        className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full hover:bg-gray-50"
+      >
         Choose a different category
       </button>
     </div>

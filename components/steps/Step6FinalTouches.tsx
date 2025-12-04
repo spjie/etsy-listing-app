@@ -102,8 +102,8 @@ export default function Step6FinalTouches({
 
       {/* Description Modal */}
       {showDescriptionModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center">
-          <div className="bg-white w-full max-w-md h-full flex flex-col">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md max-h-[80vh] flex flex-col rounded-lg">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <button
@@ -125,26 +125,36 @@ export default function Step6FinalTouches({
             <div className="flex-1 p-4 overflow-y-auto">
               {/* AI Suggested Description */}
               {showDescriptionSuggestion && aiSuggestions.description && (
-                <div className="border-2 border-blue-500 rounded-lg p-4 bg-blue-50 mb-4">
-                  <div className="text-xs font-medium text-blue-700 mb-2">
-                    AI SUGGESTED DESCRIPTION
-                  </div>
-                  <p className="text-gray-900 mb-3 whitespace-pre-wrap">
-                    {aiSuggestions.description}
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleAcceptDescription}
-                      className="flex-1 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={handleRejectDescription}
-                      className="flex-1 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
-                    >
-                      Reject
-                    </button>
+                <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50 mb-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <div className="text-xs font-medium text-gray-600 mb-2">
+                        SUGGESTED DESCRIPTION
+                      </div>
+                      <p className="text-gray-900 whitespace-pre-wrap">
+                        {aiSuggestions.description}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 ml-2">
+                      <button
+                        onClick={handleAcceptDescription}
+                        className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                        title="Accept"
+                      >
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={handleRejectDescription}
+                        className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                        title="Reject"
+                      >
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -153,7 +163,7 @@ export default function Step6FinalTouches({
                 value={descriptionInput}
                 onChange={(e) => setDescriptionInput(e.target.value)}
                 placeholder="Add description"
-                className="w-full min-h-[300px] px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
+                className="w-full min-h-[250px] px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
               />
             </div>
           </div>

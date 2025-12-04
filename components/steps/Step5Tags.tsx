@@ -19,6 +19,8 @@ export default function Step5Tags({
     !!aiSuggestions.tags && aiSuggestions.tags.length > 0
   );
   const [showAttributesExpanded, setShowAttributesExpanded] = useState(true);
+  const [attributeModal, setAttributeModal] = useState<string | null>(null);
+  const [attributeValue, setAttributeValue] = useState('');
 
   const handleAddTag = () => {
     if (tagInput.trim() && draft.tags.length < 13) {
@@ -43,6 +45,45 @@ export default function Step5Tags({
     setShowTagSuggestions(false);
   };
 
+  const openAttributeModal = (attr: string) => {
+    setAttributeModal(attr);
+    const currentValue = draft.attributes?.[attr] || '';
+    setAttributeValue(currentValue);
+  };
+
+  const handleSaveAttribute = () => {
+    if (attributeModal && attributeValue) {
+      updateDraft({
+        attributes: { ...draft.attributes, [attributeModal]: attributeValue },
+      });
+    }
+    setAttributeModal(null);
+    setAttributeValue('');
+  };
+
+  const handleAcceptAttributeSuggestion = (attr: string) => {
+    const suggestion = aiSuggestions.attributes?.[attr];
+    if (suggestion) {
+      setAttributeValue(suggestion);
+      updateDraft({
+        attributes: { ...draft.attributes, [attr]: suggestion },
+      });
+      setAttributeModal(null);
+    }
+  };
+
+  const getAttributeLabel = (attr: string) => {
+    const labels: Record<string, string> = {
+      craftType: 'Craft type',
+      primaryColor: 'Primary color',
+      secondaryColor: 'Secondary color',
+      occasion: 'Occasion',
+      holiday: 'Holiday',
+      theme: 'Theme',
+    };
+    return labels[attr] || attr;
+  };
+
   return (
     <div className="py-6">
       <h2 className="text-2xl font-semibold text-gray-900 mb-2">
@@ -58,31 +99,52 @@ export default function Step5Tags({
 
         {/* AI Suggested Tags */}
         {showTagSuggestions && aiSuggestions.tags && aiSuggestions.tags.length > 0 && (
-          <div className="border-2 border-blue-500 rounded-lg p-4 bg-blue-50 mb-3">
-            <div className="text-xs font-medium text-blue-700 mb-2">AI SUGGESTED TAGS</div>
-            <div className="flex flex-wrap gap-2 mb-3">
+          <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50 mb-3">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-xs font-medium text-gray-600">SUGGESTED TAGS</div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAcceptTags}
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                  title="Accept All"
+                >
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={handleRejectTags}
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                  title="Reject All"
+                >
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
               {aiSuggestions.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-white border border-blue-300 text-gray-900 text-sm rounded-full"
+                  className="px-3 py-1 bg-white border border-gray-300 text-gray-900 text-sm rounded-full flex items-center gap-2"
                 >
                   {tag}
+                  <button
+                    onClick={() => {
+                      if (draft.tags.length < 13) {
+                        updateDraft({ tags: [...draft.tags, tag] });
+                      }
+                    }}
+                    className="w-5 h-5 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                    title="Add this tag"
+                  >
+                    <svg className="w-3 h-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </button>
                 </span>
               ))}
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleAcceptTags}
-                className="flex-1 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-              >
-                Accept All
-              </button>
-              <button
-                onClick={handleRejectTags}
-                className="flex-1 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
-              >
-                Reject
-              </button>
             </div>
           </div>
         )}
@@ -148,39 +210,101 @@ export default function Step5Tags({
 
         {showAttributesExpanded && (
           <div className="p-4 bg-white space-y-3">
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Craft type
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Material
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Primary color
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Secondary color
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Width
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Height
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Set
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Occasion
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Holiday
-            </button>
-            <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4">
-              + Theme
-            </button>
+            {['craftType', 'primaryColor', 'secondaryColor', 'occasion', 'holiday', 'theme'].map(
+              (attr) => (
+                <button
+                  key={attr}
+                  onClick={() => openAttributeModal(attr)}
+                  className={`w-full py-3 border-2 ${
+                    draft.attributes?.[attr]
+                      ? 'border-gray-400 bg-gray-50'
+                      : 'border-gray-300'
+                  } text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-left px-4`}
+                >
+                  {draft.attributes?.[attr] ? (
+                    <span>{draft.attributes[attr]}</span>
+                  ) : (
+                    <span>+ {getAttributeLabel(attr)}</span>
+                  )}
+                </button>
+              )
+            )}
           </div>
         )}
       </div>
+
+      {/* Attribute Modal */}
+      {attributeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md max-h-[70vh] flex flex-col rounded-lg">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <button
+                onClick={() => setAttributeModal(null)}
+                className="text-gray-900 text-2xl"
+              >
+                ✕
+              </button>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {getAttributeLabel(attributeModal)}
+              </h2>
+              <button
+                onClick={handleSaveAttribute}
+                className="px-4 py-2 bg-gray-600 text-white font-medium rounded-full hover:bg-gray-700"
+              >
+                Save
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 p-4 overflow-y-auto">
+              {/* AI Suggested Attribute */}
+              {aiSuggestions.attributes?.[attributeModal] && (
+                <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50 mb-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <div className="text-xs font-medium text-gray-600 mb-2">
+                        SUGGESTED
+                      </div>
+                      <p className="text-gray-900">
+                        {aiSuggestions.attributes[attributeModal]}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 ml-2">
+                      <button
+                        onClick={() => handleAcceptAttributeSuggestion(attributeModal)}
+                        className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                        title="Accept"
+                      >
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => setAttributeModal(null)}
+                        className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                        title="Reject"
+                      >
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <input
+                type="text"
+                value={attributeValue}
+                onChange={(e) => setAttributeValue(e.target.value)}
+                placeholder={`Add ${getAttributeLabel(attributeModal).toLowerCase()}`}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

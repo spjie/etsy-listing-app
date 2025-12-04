@@ -48,28 +48,34 @@ export default function Step3BasicInfo({
         </div>
 
         {showTitleSuggestion && aiSuggestions.title ? (
-          <div className="border-2 border-blue-500 rounded-lg p-4 bg-blue-50 mb-3">
+          <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50 mb-3">
             <div className="flex items-start justify-between mb-2">
               <div className="flex-1">
-                <div className="text-xs font-medium text-blue-700 mb-1">
-                  AI SUGGESTED
+                <div className="text-xs font-medium text-gray-600 mb-1">
+                  SUGGESTED
                 </div>
                 <div className="text-gray-900">{aiSuggestions.title}</div>
               </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleAcceptTitle}
-                className="flex-1 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-              >
-                Accept
-              </button>
-              <button
-                onClick={handleRejectTitle}
-                className="flex-1 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
-              >
-                Reject
-              </button>
+              <div className="flex gap-2 ml-2">
+                <button
+                  onClick={handleAcceptTitle}
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                  title="Accept"
+                >
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={handleRejectTitle}
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                  title="Reject"
+                >
+                  <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         ) : null}
