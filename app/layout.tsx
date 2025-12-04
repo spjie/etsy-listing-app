@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ListIt - AI-Powered Product Listings",
+  title: "Listings - AI-Powered Product Listings",
   description: "Create beautiful product listings with AI-powered suggestions for titles, descriptions, and tags",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   themeColor: "#ea580c",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "ListIt",
+    title: "Listings",
   },
 };
 
