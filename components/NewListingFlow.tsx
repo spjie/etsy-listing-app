@@ -84,6 +84,12 @@ export default function NewListingFlow({
   };
 
   const handleNext = () => {
+    // Require at least one photo on step 1
+    if (currentStep === 1 && draft.photos.length === 0) {
+      alert('Please add at least one photo before continuing');
+      return;
+    }
+
     if (currentStep < 7) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -168,7 +174,12 @@ export default function NewListingFlow({
                 {currentStep < 7 && (
                   <button
                     onClick={handleNext}
-                    className="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+                    disabled={currentStep === 1 && draft.photos.length === 0}
+                    className={`px-6 py-2 rounded-full font-semibold ${
+                      currentStep === 1 && draft.photos.length === 0
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-black text-white hover:bg-gray-800'
+                    }`}
                   >
                     Next
                   </button>
