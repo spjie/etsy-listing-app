@@ -2,6 +2,8 @@
 
 A mobile-optimized web application for creating Etsy-style product listings with AI-powered suggestions for titles, descriptions, and tags.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/etsy-listing-app)
+
 ## Features
 
 - **Mobile-First Design**: Optimized for mobile devices with an app-like interface
