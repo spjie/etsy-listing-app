@@ -1,6 +1,3 @@
 {
-  "buildCommand": "npm run build",
-  "env": {
-    "OPENAI_API_KEY": "@openai-api-key"
-  }
+  "buildCommand": "npm run build"
 }
