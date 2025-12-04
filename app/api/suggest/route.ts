@@ -34,23 +34,33 @@ ${previousContext}
 
 ${currentContext}
 
-Please provide:
-1. A catchy, SEO-friendly title (if not already complete)
-2. A compelling product description (if not already complete)
-3. Relevant tags for searchability (maximum 13 tags)
+Please provide comprehensive suggestions for the listing:
+
+1. Category: What type of product is this? (e.g., "Hoop Earrings", "Beaded Necklaces", "Handmade Ring")
+2. A catchy, SEO-friendly title (if not already complete)
+3. A compelling product description (if not already complete)
+4. Relevant tags for searchability (maximum 13 tags)
+5. Materials used (e.g., ["sterling silver", "glass beads", "copper wire"])
+6. Core details about the item
+7. Suggested shipping details based on item type
 
 Consider:
-- What you see in the product image
+- What you see in the product image - the colors, materials, style, size
 - The seller's previous listing style and patterns
 - SEO keywords that buyers might search for
 - What makes the product unique and appealing
 - Current trends in handmade/artisan products
+- Appropriate category based on what you see
 
 Return your response in JSON format:
 {
-  "title": "suggested title (only if current title is incomplete or empty)",
-  "description": "suggested description (only if current description is incomplete or empty)",
-  "tags": ["tag1", "tag2", "tag3", ...]
+  "category": "product category name",
+  "title": "suggested title",
+  "description": "suggested description (2-3 paragraphs)",
+  "tags": ["tag1", "tag2", "tag3", ...],
+  "materials": ["material1", "material2", ...],
+  "coreDetails": ["Made by me", "Finished product", "Made between 2020 and 2025"],
+  "shippingDetails": "letter mail"
 }
 
 If a field already has good content, you can return null for that field.`;
