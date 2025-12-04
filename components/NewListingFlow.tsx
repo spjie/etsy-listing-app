@@ -132,72 +132,75 @@ export default function NewListingFlow({
   const currentStepInfo = steps[currentStep - 1];
 
   return (
-    <div className="min-h-screen bg-blue-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <button onClick={onClose} className="text-gray-900 text-2xl">
-            ✕
-          </button>
-          <h1 className="text-lg font-semibold text-gray-900">New listing</h1>
-          <div className="w-6"></div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      {/* Blue Banner - wraps header and step progress */}
+      <div className="bg-blue-50 pb-4">
+        {/* Header */}
+        <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+          <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <button onClick={onClose} className="text-gray-900 text-2xl">
+              ✕
+            </button>
+            <h1 className="text-lg font-semibold text-gray-900">New listing</h1>
+            <div className="w-6"></div>
+          </div>
+        </header>
 
-      {/* Step Progress */}
-      <div className="max-w-md mx-auto px-4 py-4 bg-blue-50">
-        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-md">
-          <div className="flex items-center justify-between mb-2">
-            <div>
-              <div className="text-sm text-gray-600">Step {currentStep} of 7</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {currentStepInfo.title}
+        {/* Step Progress */}
+        <div className="max-w-md mx-auto px-4 pt-4">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <div className="text-sm text-gray-600">Step {currentStep} of 7</div>
+                <div className="text-lg font-semibold text-gray-900">
+                  {currentStepInfo.title}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {currentStep > 1 && (
+                  <button
+                    onClick={handleBack}
+                    className="px-6 py-2 border-2 border-gray-300 text-gray-900 rounded-full font-semibold hover:bg-gray-50"
+                  >
+                    Back
+                  </button>
+                )}
+                {currentStep < 7 && (
+                  <button
+                    onClick={handleNext}
+                    className="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+                  >
+                    Next
+                  </button>
+                )}
+                {currentStep === 7 && (
+                  <button
+                    onClick={handlePublish}
+                    className="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+                  >
+                    Publish
+                  </button>
+                )}
               </div>
             </div>
-            <div className="flex gap-2">
-              {currentStep > 1 && (
-                <button
-                  onClick={handleBack}
-                  className="px-6 py-2 border-2 border-gray-300 text-gray-900 rounded-full font-semibold hover:bg-gray-50"
-                >
-                  Back
-                </button>
-              )}
-              {currentStep < 7 && (
-                <button
-                  onClick={handleNext}
-                  className="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
-                >
-                  Next
-                </button>
-              )}
-              {currentStep === 7 && (
-                <button
-                  onClick={handlePublish}
-                  className="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
-                >
-                  Publish
-                </button>
-              )}
+            {currentStepInfo.next && (
+              <div className="text-sm text-gray-500 mb-2">
+                Next: {currentStepInfo.next}
+              </div>
+            )}
+            {/* Progress Bar */}
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(currentStep / 7) * 100}%` }}
+              ></div>
             </div>
-          </div>
-          {currentStepInfo.next && (
-            <div className="text-sm text-gray-500 mb-2">
-              Next: {currentStepInfo.next}
-            </div>
-          )}
-          {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(currentStep / 7) * 100}%` }}
-            ></div>
           </div>
         </div>
       </div>
 
       {/* Step Content */}
-      <main className="max-w-md mx-auto px-4 pb-20">
+      <main className="max-w-md mx-auto px-4 pb-20 bg-white">
         {currentStep === 1 && (
           <Step1Photos
             draft={draft}
