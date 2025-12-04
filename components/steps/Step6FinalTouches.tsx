@@ -49,14 +49,9 @@ export default function Step6FinalTouches({
 
       {/* Photo and Video */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <label className="text-sm font-medium text-gray-700">
-            Photo and video<span className="text-red-600">*</span>
-          </label>
-          <button className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-600">✎</span>
-          </button>
-        </div>
+        <label className="text-sm font-medium text-gray-700 mb-3 block">
+          Photo and video<span className="text-red-600">*</span>
+        </label>
 
         {/* Photo Thumbnails */}
         <div className="grid grid-cols-4 gap-2 mb-4">

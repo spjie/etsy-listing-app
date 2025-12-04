@@ -23,16 +23,43 @@ export default function Step2Category({
     return category;
   };
 
-  const categories = aiSuggestions.category
-    ? [
+  // Build categories list with AI suggestion and static options
+  const buildCategories = () => {
+    const staticCategories = [
+      {
+        id: 'beaded-necklaces',
+        name: 'Beaded Necklaces',
+        path: 'Jewelry > Necklaces > Beaded Necklaces',
+        lastUsed: true,
+        suggested: false,
+      },
+      {
+        id: 'statement-earrings',
+        name: 'Statement Earrings',
+        path: 'Jewelry > Earrings > Statement Earrings',
+        lastUsed: false,
+        suggested: false,
+      },
+    ];
+
+    if (aiSuggestions.category) {
+      return [
         {
           id: 'ai-suggested',
           name: aiSuggestions.category.split('>').pop()?.trim() || aiSuggestions.category,
           path: generateCategoryPath(aiSuggestions.category),
           suggested: true,
+          lastUsed: false,
         },
-      ]
-    : [];
+        ...staticCategories,
+      ];
+    }
+
+    return staticCategories;
+  };
+
+  const categories = buildCategories();
+  const isLoading = !aiSuggestions.category;
 
   const handleCategorySelect = (categoryId: string) => {
     const selected = categories.find((c) => c.id === categoryId);
@@ -58,6 +85,24 @@ export default function Step2Category({
 
       {/* Category Options */}
       <div className="space-y-3 mb-6">
+        {/* Loading placeholder for AI suggestion */}
+        {isLoading && (
+          <div className="w-full text-left p-4 border-2 border-gray-300 rounded-lg bg-gray-50 animate-pulse">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3 flex-1">
+                <div className="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5"></div>
+                <div className="flex-1">
+                  <div className="h-5 bg-gray-300 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full"></div>
+                </div>
+              </div>
+              <span className="px-3 py-1 bg-gray-200 text-gray-200 text-xs font-medium rounded-full">
+                Loading...
+              </span>
+            </div>
+          </div>
+        )}
+
         {categories.map((category) => (
           <button
             key={category.id}
@@ -86,11 +131,18 @@ export default function Step2Category({
                   <div className="text-sm text-gray-600">{category.path}</div>
                 </div>
               </div>
-              {category.suggested && (
-                <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
-                  Suggested
-                </span>
-              )}
+              <div className="flex gap-2">
+                {category.suggested && (
+                  <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                    Suggested
+                  </span>
+                )}
+                {category.lastUsed && (
+                  <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                    Last used
+                  </span>
+                )}
+              </div>
             </div>
           </button>
         ))}

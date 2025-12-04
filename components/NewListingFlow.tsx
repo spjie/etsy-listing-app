@@ -132,7 +132,7 @@ export default function NewListingFlow({
   const currentStepInfo = steps[currentStep - 1];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-blue-50">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
@@ -145,8 +145,8 @@ export default function NewListingFlow({
       </header>
 
       {/* Step Progress */}
-      <div className="max-w-md mx-auto px-4 py-4 bg-white">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="max-w-md mx-auto px-4 py-4 bg-blue-50">
+        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-md">
           <div className="flex items-center justify-between mb-2">
             <div>
               <div className="text-sm text-gray-600">Step {currentStep} of 7</div>
