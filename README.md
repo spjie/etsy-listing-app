@@ -1,4 +1,4 @@
-# ListIt - AI-Powered Product Listing App
+# Etsy Listing App
 
 A mobile-optimized web application for creating Etsy-style product listings with AI-powered suggestions for titles, descriptions, and tags.
 
