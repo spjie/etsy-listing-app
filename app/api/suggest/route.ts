@@ -28,7 +28,7 @@ ${currentDescription ? `Description: ${currentDescription}` : 'No description ye
 ${currentTags && currentTags.length > 0 ? `Tags: ${currentTags.join(', ')}` : 'No tags yet'}
     `.trim();
 
-    const prompt = `You are helping a seller create an Etsy-style product listing. Based on the information provided, suggest improvements or fill in missing details.
+    const prompt = `You are helping a seller create an Etsy-style product listing. Based on the product image and information provided, suggest improvements or fill in missing details.
 
 ${previousContext}
 
@@ -40,6 +40,7 @@ Please provide:
 3. Relevant tags for searchability (maximum 13 tags)
 
 Consider:
+- What you see in the product image
 - The seller's previous listing style and patterns
 - SEO keywords that buyers might search for
 - What makes the product unique and appealing
@@ -54,19 +55,39 @@ Return your response in JSON format:
 
 If a field already has good content, you can return null for that field.`;
 
+    const messages: any[] = [
+      {
+        role: 'system',
+        content:
+          'You are an expert Etsy seller assistant who helps create compelling product listings. Always return valid JSON only.',
+      },
+    ];
+
+    // Add image if provided
+    if (imageUrl) {
+      messages.push({
+        role: 'user',
+        content: [
+          {
+            type: 'image_url',
+            image_url: { url: imageUrl },
+          },
+          {
+            type: 'text',
+            text: prompt,
+          },
+        ],
+      });
+    } else {
+      messages.push({
+        role: 'user',
+        content: prompt,
+      });
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are an expert Etsy seller assistant who helps create compelling product listings. Always return valid JSON only.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
+      messages,
       temperature: 0.7,
       response_format: { type: 'json_object' },
     });
